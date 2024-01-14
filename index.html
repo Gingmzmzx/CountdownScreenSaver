@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+	<link rel="stylesheet" href="https://unpkg.com/mdui@1.0.2/dist/css/mdui.min.css"/>
+	<script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
+    <title>ScreenSaver</title>
+	<script>
+		const $ = mdui.$;
+		var bgImages,
+			idx = 0,
+			countdowns = [
+				{
+					"time": "2026-06-07",
+					"name": "高考"
+				},
+				{
+					"time": "2024-1-30",
+					"name": "期末考试"
+				}
+			];
+			
+		function changeBgimage(){
+			var data = bgImages[idx];
+			idx++;
+			mdui.$("body").css("background-image", `url("https://cn.bing.com${data.url}")`);
+			if (idx >= bgImages.length){
+				idx = 0;
+			}
+		}
+		
+		function setImages(data){
+			bgImages = data;
+		}
+		
+		function countdown(){
+			const now = new Date();
+			
+			mdui.$.each(countdowns, function(index, value){
+				console.log(value);
+				var targetDate = new Date(value.time);
+				var timeDifference = targetDate.getTime() - now.getTime();
+				var daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+				var hoursDifference = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+				var minutesDifference = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+				var secondsDifference = Math.floor((timeDifference % (1000 * 60)) / 1000);
+				
+				mdui.$(`#count-down-day-${index}`).html(daysDifference);
+				mdui.$(`#count-down-hour-${index}`).html(hoursDifference);
+				mdui.$(`#count-down-minute-${index}`).html(minutesDifference);
+				mdui.$(`#count-down-second-${index}`).html(secondsDifference);
+			});
+		}
+		
+		function initCountdown(){
+			mdui.$.each(countdowns, function(index, value){
+				mdui.$(".countdown").append(`<div class="countdownitem" id="count-down-${index}">
+				<div class="mdui-typo-display-1 inline">距离</div> <div class="mdui-typo-display-2 inline alert-color">${value.name}</div> <div class="mdui-typo-display-1 inline">仅剩</div>
+				<div class="mdui-typo-display-2 inline alert-color" id="count-down-day-${index}"></div> <div class="mdui-typo-display-1 inline">天</div>
+				<div class="mdui-typo-display-2 inline alert-color" id="count-down-hour-${index}"></div> <div class="mdui-typo-display-1 inline">时</div>
+				<div class="mdui-typo-display-2 inline alert-color" id="count-down-minute-${index}"></div> <div class="mdui-typo-display-1 inline">分</div>
+				<div class="mdui-typo-display-2 inline alert-color" id="count-down-second-${index}"></div> <div class="mdui-typo-display-1 inline">秒</div>
+				</div>`);
+			});
+		}
+		
+		function showTime(){
+			var now = new Date();
+			var hours = String(now.getHours()).padStart(2, '0');
+			var minutes = String(now.getMinutes()).padStart(2, '0');
+			var seconds = String(now.getSeconds()).padStart(2, '0');
+			var str = hours + ":" + minutes + ":" + seconds;
+			mdui.$(".time").html(`<div class="mdui-typo-display-3">${str}</div>`);
+			
+			countdown();
+		}
+	
+		mdui.$(function(){
+			$(document).on('mousemove', function(event) { // 注册鼠标移动事件的侦听器
+                var x = event.pageX; // 获取鼠标在页面上的水平位置
+                var y = event.pageY; // 获取鼠标在页面上的垂直位置
+                
+                console.log("鼠标位置：", "x=" + x, ", y=" + y); // 输出到控制台
+                window.electronApi.sendMessage("exit");
+            });
+			
+			mdui.$.ajax({
+			  method: 'GET',
+			  url: 'https://cn.bing.com/HPImageArchive.aspx?spm=a2c6h.12873639.article-detail.7.7f105b7e2EXYO1&format=js&idx=1&n=10',
+			  success: function (data) {
+				data = JSON.parse(data);
+				setImages(data.images);
+				changeBgimage();
+				var imageInterval = setInterval(changeBgimage, 300000);
+			  }
+			});
+			
+			initCountdown();
+			showTime();
+			var timeInterval = setInterval(showTime, 1000);
+		});
+	</script>
+	<style>
+		.background{
+			width: 100vw;
+			height: 100vh;
+			background-color: rgba(0, 0, 0, 0.7);
+			z-index: -1;
+			position: absolute;
+			top: 0;
+			left: 0;
+		}
+		.time{
+			margin-top: 10%;
+			text-align: center;
+			z-index: 2;
+			color: white;
+		}
+		.countdown{
+			margin-top: 10%;
+			text-align: center;
+			z-index: 2;
+			color: white;
+		}
+		.countdownitem{
+			margin-top: 3%;
+		}
+		.inline{
+			display: inline;
+		}
+		.alert-color{
+			color:#FF9966;
+		}
+		footer {
+		  position: fixed;
+		  left: 0;
+		  bottom: 0;
+		  width: 100%;
+		  text-align: center;
+		}
+		footer .copyright {
+		  display: inline-block;
+		  padding: 10px;
+		  color: white;
+		}
+	</style>
+  </head>
+  <body>
+  	<div class="background"></div> 
+	<div class="time"></div>
+	<div class="countdown"></div>
+	<div class="copyright">
+	<footer>
+	  <div class="copyright mdui-typo">
+		<div class="mdui-typo-subheading">CountdownScreenSaver | 倒计时屏保 | XzyStudio制作 | <a href="https://github.com/Gingmzmzx/CountdownScreenSaver">GitHub</a> | <a href="javascript:window.electronApi.sendMessage('openDevTools');">打开DevTools</a></div>
+	  </div>
+	</footer>
+	</div>
+  </body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "name": "CountdownScreenSaver",
+  "version": "1.0.0",
+  "description": "A Screen Saver Based on Electron",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://github.com/Gingmzmzx/CountdownScreenSaver",
+  "keywords": [
+    "Electron",
+    "Screen Saver",
+    "Countdown",
+    "Countdown Screen Saver"
+  ],
+  "author": "Gingmzmzx",
+  "devDependencies": {
+    "electron": "20.0.0"
+  }
+}
