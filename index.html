@@ -71,13 +71,6 @@
 		}
 
 		mdui.$(function(){
-			$(document).on('mousemove', function(event) { // 注册鼠标移动事件的侦听器
-                var x = event.pageX; // 获取鼠标在页面上的水平位置
-                var y = event.pageY; // 获取鼠标在页面上的垂直位置
-                
-                // window.electronApi.sendMessage("exit");
-            });
-			
 			mdui.$.ajax({
 			  method: 'GET',
 			  url: 'https://cn.bing.com/HPImageArchive.aspx?spm=a2c6h.12873639.article-detail.7.7f105b7e2EXYO1&format=js&idx=1&n=10',
@@ -146,7 +139,7 @@
 	<footer>
 		<div class="copyright mdui-typo">
 			<h5 id="bgimageInfo"></h5>
-			<div class="mdui-typo-subheading">CountdownScreenSaver | 倒计时屏保 | XzyStudio制作 | <a href="https://github.com/Gingmzmzx/CountdownScreenSaver">GitHub</a> | <a href="javascript:window.electronApi.sendMessage('openDevTools');">打开DevTools</a></div>
+			<div class="mdui-typo-subheading">CountdownScreenSaver | 倒计时屏保 | XzyStudio制作 | <a href="https://github.com/Gingmzmzx/CountdownScreenSaver">GitHub</a></div>
 		</div>
 	</footer>
 
@@ -163,7 +156,8 @@
 		  <a href="#settingTab3" class="mdui-ripple">关于</a>
 		</div>
 		<div id="settingTab1" class="mdui-p-a-2">
-			
+			<button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" onclick="window.electronApi.sendMessage('exit');">关闭屏保</button>
+			<button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" onclick="window.electronApi.sendMessage('openDevTools');">打开DevTools</button>
 		</div>
 		<div id="settingTab2" class="mdui-p-a-2">
 			

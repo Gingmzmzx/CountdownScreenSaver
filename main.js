@@ -24,7 +24,7 @@ function createWindow () {
   
   mainWindow.setSimpleFullScreen(true);
   mainWindow.loadFile('index.html');
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
   mainWindow.setMenu(null);
 
   ipcMain.on("openDevTools", (event, message)=>{
