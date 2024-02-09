@@ -10,7 +10,7 @@
 本程序主体是作者花了两节晚自习疯狂撸出来的，因此很多功能和一些实现方式并没有添加，程序也是依托答辩，预计会在寒假整理并改进一下，推出正式Release，请谅解。
 
 ## 使用
-- 前往[/releases](Releases)下载最新发行版中的`Setup.exe`
+- 前往[https://github.com/Gingmzmzx/CountdownScreenSaver/releases/](Releases)下载最新发行版中的`Setup.exe`
 - 接下来有两种部署方式
   1. 启动器（需根据本机实际情况自行编译，不推荐）
      - 该方法是由于一开始在学校机房，机房电脑无法打包而产生的。其原理是自己实现一个启动器，检测无输入后启动。
