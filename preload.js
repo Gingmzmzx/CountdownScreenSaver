@@ -17,11 +17,21 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 })
 
-const { contextBridge, ipcRenderer } = require('electron');
+const { contextBridge, ipcRenderer, remote } = require('electron');
 
-// 在 contextBridge 中暴露给渲染进程使用的 API
+ipcRenderer.on('config-data', (event, config) => {
+  console.log("Debug 1", config);
+  window.configData = config;
+});
+
 contextBridge.exposeInMainWorld('electronApi', {
   sendMessage: (name, message=undefined) => {
     ipcRenderer.send(name, message);
+  },
+  getConfig: () => {
+    return window.configData;
+  },
+  openDevTools: () => {
+    remote.getCurrentWebContents().openDevTools();
   }
 });

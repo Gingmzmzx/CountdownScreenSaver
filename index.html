@@ -9,21 +9,17 @@
 		const $ = mdui.$;
 		var bgImages,
 			idx = 0,
-			countdowns = [
-				{
-					"time": "2026-06-07",
-					"name": "高考"
-				},
-				{
-					"time": "2024-1-30",
-					"name": "期末考试"
-				}
-			];
+			config,
+			countdowns;
+		config = window.electronApi.getConfig();
+		console.log(config);
+		countdowns = config.countdowns;
 			
 		function changeBgimage(){
 			var data = bgImages[idx];
 			idx++;
 			mdui.$("body").css("background-image", `url("https://cn.bing.com${data.url}")`);
+			mdui.$("#bgimageInfo").html(`${data.title} <a href="${data.copyrightlink}">${data.copyright}</a> <small style="color: white;">背景图片来自必应</small>`);
 			if (idx >= bgImages.length){
 				idx = 0;
 			}
@@ -37,7 +33,6 @@
 			const now = new Date();
 			
 			mdui.$.each(countdowns, function(index, value){
-				console.log(value);
 				var targetDate = new Date(value.time);
 				var timeDifference = targetDate.getTime() - now.getTime();
 				var daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
@@ -74,14 +69,13 @@
 			
 			countdown();
 		}
-	
+
 		mdui.$(function(){
 			$(document).on('mousemove', function(event) { // 注册鼠标移动事件的侦听器
                 var x = event.pageX; // 获取鼠标在页面上的水平位置
                 var y = event.pageY; // 获取鼠标在页面上的垂直位置
                 
-                console.log("鼠标位置：", "x=" + x, ", y=" + y); // 输出到控制台
-                window.electronApi.sendMessage("exit");
+                // window.electronApi.sendMessage("exit");
             });
 			
 			mdui.$.ajax({
@@ -117,7 +111,7 @@
 			color: white;
 		}
 		.countdown{
-			margin-top: 10%;
+			margin: 10%;
 			text-align: center;
 			z-index: 2;
 			color: white;
@@ -145,16 +139,38 @@
 		}
 	</style>
   </head>
-  <body>
+  <body class="mdui-theme-primary-indigo mdui-theme-accent-pink mdui-theme-layout-auto">
   	<div class="background"></div> 
 	<div class="time"></div>
 	<div class="countdown"></div>
-	<div class="copyright">
 	<footer>
-	  <div class="copyright mdui-typo">
-		<div class="mdui-typo-subheading">CountdownScreenSaver | 倒计时屏保 | XzyStudio制作 | <a href="https://github.com/Gingmzmzx/CountdownScreenSaver">GitHub</a> | <a href="javascript:window.electronApi.sendMessage('openDevTools');">打开DevTools</a></div>
-	  </div>
+		<div class="copyright mdui-typo">
+			<h5 id="bgimageInfo"></h5>
+			<div class="mdui-typo-subheading">CountdownScreenSaver | 倒计时屏保 | XzyStudio制作 | <a href="https://github.com/Gingmzmzx/CountdownScreenSaver">GitHub</a> | <a href="javascript:window.electronApi.sendMessage('openDevTools');">打开DevTools</a></div>
+		</div>
 	</footer>
+
+	<div class="mdui-fab-wrapper" id="exampleFab">
+		<button class="mdui-fab mdui-ripple mdui-color-theme-accent" mdui-dialog="{target: '#settingDialog'}">
+			<i class="mdui-icon material-icons">settings</i>
+		</button>
 	</div>
+
+	<div class="mdui-dialog" id="settingDialog">
+		<div class="mdui-tab mdui-tab-full-width" id="settingTab" mdui-tab>
+		  <a href="#settingTab1" class="mdui-ripple mdui-tab-active">操作</a>
+		  <a href="#settingTab2" class="mdui-ripple">设置</a>
+		  <a href="#settingTab3" class="mdui-ripple">关于</a>
+		</div>
+		<div id="settingTab1" class="mdui-p-a-2">
+			
+		</div>
+		<div id="settingTab2" class="mdui-p-a-2">
+			
+		</div>
+		<div id="settingTab3" class="mdui-p-a-2">
+			
+		</div>
+	  </div>
   </body>
 </html>
